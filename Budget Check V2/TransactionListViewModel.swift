@@ -74,6 +74,10 @@ final class TransactionListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    
+    
+    
+    
     func groupTransactionsByMonth() -> TransactionGroup {
         // checks if transaction array is empty else we return empty dictinary
         guard !transactions.isEmpty else {return[:] }

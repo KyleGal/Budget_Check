@@ -10,6 +10,7 @@
 		4260289A2A5A598F005BF7D7 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 426028992A5A598F005BF7D7 /* Collections */; };
 		4260289D2A5A6477005BF7D7 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 4260289C2A5A6477005BF7D7 /* SwiftUICharts */; };
 		4260289F2A5B9046005BF7D7 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260289E2A5B9046005BF7D7 /* BudgetView.swift */; };
+		426028A52A5F1F1D005BF7D7 /* NewTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426028A42A5F1F1D005BF7D7 /* NewTransactionView.swift */; };
 		42F03A7C2A588EF400F0CC43 /* Budget_Check_V2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F03A7B2A588EF400F0CC43 /* Budget_Check_V2App.swift */; };
 		42F03A7E2A588EF400F0CC43 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F03A7D2A588EF400F0CC43 /* ContentView.swift */; };
 		42F03A802A588EF500F0CC43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42F03A7F2A588EF500F0CC43 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		4260289E2A5B9046005BF7D7 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
+		426028A42A5F1F1D005BF7D7 /* NewTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTransactionView.swift; sourceTree = "<group>"; };
 		42F03A782A588EF400F0CC43 /* Budget Check V2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Budget Check V2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F03A7B2A588EF400F0CC43 /* Budget_Check_V2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget_Check_V2App.swift; sourceTree = "<group>"; };
 		42F03A7D2A588EF400F0CC43 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,11 +76,12 @@
 			isa = PBXGroup;
 			children = (
 				42F03A7B2A588EF400F0CC43 /* Budget_Check_V2App.swift */,
-				42F03A7D2A588EF400F0CC43 /* ContentView.swift */,
 				4260289E2A5B9046005BF7D7 /* BudgetView.swift */,
+				42F03A7D2A588EF400F0CC43 /* ContentView.swift */,
 				42F03A892A588F6800F0CC43 /* Extensions.swift */,
-				42F03A9C2A5A563700F0CC43 /* TransactionList.swift */,
+				426028A42A5F1F1D005BF7D7 /* NewTransactionView.swift */,
 				42F03A9A2A58BE2100F0CC43 /* RecentTransactionList.swift */,
+				42F03A9C2A5A563700F0CC43 /* TransactionList.swift */,
 				42F03A962A589A5F00F0CC43 /* TransactionListViewModel.swift */,
 				42F03A8B2A5892EB00F0CC43 /* TransactionModel.swift */,
 				42F03A912A58950F00F0CC43 /* TransactionRow.swift */,
@@ -182,6 +185,7 @@
 				42F03A9B2A58BE2100F0CC43 /* RecentTransactionList.swift in Sources */,
 				42F03A8C2A5892EB00F0CC43 /* TransactionModel.swift in Sources */,
 				42F03A7E2A588EF400F0CC43 /* ContentView.swift in Sources */,
+				426028A52A5F1F1D005BF7D7 /* NewTransactionView.swift in Sources */,
 				42F03A922A58950F00F0CC43 /* TransactionRow.swift in Sources */,
 				42F03A8A2A588F6900F0CC43 /* Extensions.swift in Sources */,
 				42F03A972A589A5F00F0CC43 /* TransactionListViewModel.swift in Sources */,

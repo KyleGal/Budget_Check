@@ -65,6 +65,7 @@ struct Transaction: Identifiable, Decodable, Hashable {
 enum TransactionType: String {
     case debit = "debit"
     case credit = "credit"
+    case cash = "cash"
 }
 
 
