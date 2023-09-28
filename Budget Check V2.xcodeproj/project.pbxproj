@@ -14,7 +14,6 @@
 		4260289F2A5B9046005BF7D7 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4260289E2A5B9046005BF7D7 /* BudgetView.swift */; };
 		426028A52A5F1F1D005BF7D7 /* NewTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426028A42A5F1F1D005BF7D7 /* NewTransactionView.swift */; };
 		42633DCE2AC6012200ADC727 /* databaseFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42633DCD2AC6012200ADC727 /* databaseFunctions.swift */; };
-		42EC79F12AC385BD00C5E3EE /* databaseManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC79F02AC385BD00C5E3EE /* databaseManagement.swift */; };
 		42F03A7C2A588EF400F0CC43 /* Budget_Check_V2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F03A7B2A588EF400F0CC43 /* Budget_Check_V2App.swift */; };
 		42F03A7E2A588EF400F0CC43 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F03A7D2A588EF400F0CC43 /* ContentView.swift */; };
 		42F03A802A588EF500F0CC43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42F03A7F2A588EF500F0CC43 /* Assets.xcassets */; };
@@ -34,7 +33,6 @@
 		4260289E2A5B9046005BF7D7 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
 		426028A42A5F1F1D005BF7D7 /* NewTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTransactionView.swift; sourceTree = "<group>"; };
 		42633DCD2AC6012200ADC727 /* databaseFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseFunctions.swift; sourceTree = "<group>"; };
-		42EC79F02AC385BD00C5E3EE /* databaseManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseManagement.swift; sourceTree = "<group>"; };
 		42F03A782A588EF400F0CC43 /* Budget Check V2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Budget Check V2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F03A7B2A588EF400F0CC43 /* Budget_Check_V2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget_Check_V2App.swift; sourceTree = "<group>"; };
 		42F03A7D2A588EF400F0CC43 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 		42F03A6F2A588EF400F0CC43 = {
 			isa = PBXGroup;
 			children = (
-				42EC79F02AC385BD00C5E3EE /* databaseManagement.swift */,
 				42F03A7A2A588EF400F0CC43 /* Budget Check V2 */,
 				42F03A792A588EF400F0CC43 /* Products */,
 			);
@@ -204,7 +201,6 @@
 				42F03A8E2A58940E00F0CC43 /* PreviewData.swift in Sources */,
 				423F17AA2AA19C0400FAD12A /* localDatabase.swift in Sources */,
 				42F03A9D2A5A563700F0CC43 /* TransactionList.swift in Sources */,
-				42EC79F12AC385BD00C5E3EE /* databaseManagement.swift in Sources */,
 				42F03A9B2A58BE2100F0CC43 /* RecentTransactionList.swift in Sources */,
 				42F03A8C2A5892EB00F0CC43 /* TransactionModel.swift in Sources */,
 				42F03A7E2A588EF400F0CC43 /* ContentView.swift in Sources */,
