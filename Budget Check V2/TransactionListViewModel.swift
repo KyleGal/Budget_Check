@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import Collections
+import GRDB
 
 // typealias for a data type makes it reusable and easy to refer to
     // below is a dictionary of string w/ array of transaction
@@ -23,6 +24,9 @@ typealias BudgetGroup = OrderedDictionary<Budget, [Transaction]>
 final class TransactionListViewModel: ObservableObject {
     // @Published sends notifs to subscribers whenever its value has changed
     @Published var transactions: [Transaction] = []
+    
+    // database initialization
+    let database = SQLiteDatabase.shared
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -40,7 +44,7 @@ final class TransactionListViewModel: ObservableObject {
         // fetch data from an api (but here use a url from Combine)
         // handles incoming data
         URLSession.shared.dataTaskPublisher(for: url)
-            // tryMap responses and allows us to throw an error if something goes wrong
+        // tryMap responses and allows us to throw an error if something goes wrong
             .tryMap { (data, response) -> Data in
                 // checks if their is HTTP url response and status code == 200 else dump response and throw error
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -49,34 +53,31 @@ final class TransactionListViewModel: ObservableObject {
                 }
                 return data
             }
-            // decode using JSONDecoder to transform incoming json into usable data by adding 'Decodable' keyword to Transaction struct
+        // decode using JSONDecoder to transform incoming json into usable data by adding 'Decodable' keyword to Transaction struct
             .decode(type: [Transaction].self, decoder: JSONDecoder())
-            // receive data on main thread to perform updates on main UI
+        // receive data on main thread to perform updates on main UI
             .receive(on: DispatchQueue.main)
-            // sink allows us to process data
+        // sink allows us to process data
             .sink { completion in
                 // handles successful or failure cases when fetching transactions
                 switch completion {
                 case .failure(let error):
                     print("Error fetching transactions: ", error.localizedDescription)
                 case .finished:
-                    print("Finished fetiching transactions")
+                    print("Finished fetching transactions")
+                    self.moveTransactionsToDatabase()
                 }
-            // handles data output
+                // handles data output
                 // weak self creates a weak reference to self to prevent memory leaks as it will release the memory when necessary
             } receiveValue: { [weak self] result in
                 // store results in transactions array
                 self?.transactions = result
                 // dump transactions for testing
-//                dump(self?.transactions)
+                //                dump(self?.transactions)
             }
-            // store
+        // store
             .store(in: &cancellables)
     }
-    
-    
-    
-    
     
     func groupTransactionsByMonth() -> TransactionGroup {
         // checks if transaction array is empty else we return empty dictinary
@@ -145,26 +146,13 @@ final class TransactionListViewModel: ObservableObject {
     }
     
     // Budget Category Groupings
-    func accumulateIncomeTransactions() -> Double {
-        print("accumulateIncomeTransactions")
-        guard !transactions.isEmpty else {return 0.00}
-        
-        var incomeSum: Double = .zero
-        for transaction in transactions {
-            if transaction.budgetCategory == .income {
-                incomeSum += transaction.signedAmount
-            }
-        }
-        print("Income:", incomeSum.roundedTo2Digits())
-        return incomeSum.roundedTo2Digits()
-    }
     
     func accumulateWantsTransactions() -> Double {
         print("accumulateWantsTransactions")
         guard !transactions.isEmpty else {return 0.00}
         
         // Wants are 30% of income
-        var incomeSum: Double = accumulateIncomeTransactions() * 0.30
+        var incomeSum: Double = accumulateIncome() * 0.30
         print("Wants Allocation:", incomeSum.roundedTo2Digits())
         
         for transaction in transactions {
@@ -182,7 +170,7 @@ final class TransactionListViewModel: ObservableObject {
         guard !transactions.isEmpty else {return 0.00}
         
         // Needs are 50% of income
-        var incomeSum: Double = accumulateIncomeTransactions() * 0.50
+        var incomeSum: Double = accumulateIncome() * 0.50
         print("Needs Allocation:", incomeSum.roundedTo2Digits())
         
         for transaction in transactions {
@@ -200,7 +188,7 @@ final class TransactionListViewModel: ObservableObject {
         guard !transactions.isEmpty else {return 0.00}
         
         // Savings are 20% of income
-        var incomeSum: Double = accumulateIncomeTransactions() * 0.20
+        var incomeSum: Double = accumulateIncome() * 0.20
         print("Savings Allocation:", incomeSum.roundedTo2Digits())
         
         for transaction in transactions {
@@ -212,4 +200,50 @@ final class TransactionListViewModel: ObservableObject {
         return incomeSum.roundedTo2Digits()
     }
     
+    // write transactions to database (temporary)
+    func moveTransactionsToDatabase() {
+        print("moving transactions to database")
+        for transaction in transactions {
+            let transactionDBModel = DatabaseTransactionModel(
+                id: transaction.id,
+                name: transaction.institution,
+                date: transaction.date,
+                categoryID: transaction.categoryId,
+                amount: transaction.amount,
+                type: transaction.type,
+                isExpense: transaction.isExpense
+            )
+            
+            // insert transactions into database
+            do {
+                try database.writer.write {db in
+                    try transactionDBModel.save(db)
+                }
+                print("Transaction inserted successfully.")
+            } catch {
+            print("Error: \(error)")
+            }
+        }
+        addToNeeds(income: 50)
+        addToSavings(income: 100)
+        addToWants(income: 15)
+        print("Finished moving transactions")
+    }
+    
+}
+
+struct DatabaseTransactionModel: Codable, FetchableRecord, PersistableRecord {
+    var id: Int
+    var name: String
+    var date: String
+    var categoryID: Int
+    var amount: Double
+    var type: TransactionType.RawValue
+    var isExpense: Bool
+}
+
+struct BudgetBucketModel: Codable, FetchableRecord, PersistableRecord {
+    var needs: Double
+    var wants: Double
+    var savings: Double
 }

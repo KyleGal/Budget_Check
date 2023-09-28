@@ -12,6 +12,9 @@ struct Budget_Check_V2App: App {
     // @StateObject allows us to use the object within other views
     @StateObject var transactionListVM = TransactionListViewModel()
     
+    // database initialization
+    let database = SQLiteDatabase.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

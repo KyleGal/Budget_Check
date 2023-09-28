@@ -15,11 +15,34 @@ struct BudgetView: View {
     
     var body: some View {
         VStack {
+            
+            VStack {
+                Text("Reset Budget Nums:")
+                    .font(.title)
+                    .padding()
+                
+                Button(action: {
+                    // Action to perform when the button is tapped
+                    print("Budget Nums Reset!")
+                    transactionListVM.resetBudgetBuckets()
+                }) {
+                    Text("Click Me")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+            }
+            
             HStack(spacing: 0) {
                 // Header Title
                 Text("Budget Priority")
                     .bold()
                 Spacer()
+                
+                // database testing
+//                Text(transactionListVM.moveTransactionsToDatabase())
                 
                 // Priority Picker
                 Picker(selection: $selectedPriority, label: Text("Priority")) {
@@ -39,7 +62,7 @@ struct BudgetView: View {
                         .fill(Color.background)
                         .frame(width: 150, height: 75)
                         .overlay {
-                            Text(transactionListVM.accumulateWantsTransactions().formatted(.currency(code: "USD")))
+                            Text(transactionListVM.showWants().formatted(.currency(code: "USD")))
                                 .font(.title2)
                                 .bold()
                                 .padding()
@@ -50,7 +73,7 @@ struct BudgetView: View {
                         .fill(Color.background)
                         .frame(width: 150, height: 75)
                         .overlay {
-                            Text(transactionListVM.accumulateNeedsTransactions().formatted(.currency(code: "USD")))
+                            Text(transactionListVM.showNeeds().formatted(.currency(code: "USD")))
                                 .font(.title2)
                                 .bold()
                                 .padding()
@@ -61,7 +84,7 @@ struct BudgetView: View {
                         .fill(Color.background)
                         .frame(width: 150, height: 75)
                         .overlay {
-                            Text(transactionListVM.accumulateSavingsTransactions().formatted(.currency(code: "USD")))
+                            Text(transactionListVM.showSavings().formatted(.currency(code: "USD")))
                                 .font(.title2)
                                 .bold()
                                 .padding()
@@ -80,7 +103,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateNeedsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showNeeds().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
@@ -91,7 +114,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateSavingsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showSavings().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
@@ -102,7 +125,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateWantsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showWants().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
@@ -118,7 +141,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateSavingsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showSavings().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
@@ -129,7 +152,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateWantsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showWants().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
@@ -140,7 +163,7 @@ struct BudgetView: View {
                             .fill(Color.background)
                             .frame(width: 150, height: 75)
                             .overlay {
-                                Text(transactionListVM.accumulateNeedsTransactions().formatted(.currency(code: "USD")))
+                                Text(transactionListVM.showNeeds().formatted(.currency(code: "USD")))
                                     .font(.title2)
                                     .bold()
                                     .padding()
