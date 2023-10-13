@@ -226,7 +226,7 @@ final class TransactionListViewModel: ObservableObject {
 }
 
 struct DatabaseTransactionModel: Codable, FetchableRecord, PersistableRecord {
-    var id: Int
+    var id: Int?
     var name: String
     var date: String
     var categoryID: Int
@@ -234,7 +234,7 @@ struct DatabaseTransactionModel: Codable, FetchableRecord, PersistableRecord {
     var type: TransactionType.RawValue
     var isExpense: Bool
     
-    init(id:Int, name:String, date: String, categoryID: Int, amount: Double, type: TransactionType.RawValue, isExpense: Bool) {
+    init(id:Int?, name:String, date: String, categoryID: Int, amount: Double, type: TransactionType.RawValue, isExpense: Bool) {
         self.id = id
         self.name = name
         self.date = date

@@ -18,7 +18,7 @@ extension TransactionListViewModel {
         do {
             try database.reader.read { db in
                 if let transaction = try DatabaseTransactionModel.fetchOne(db, sql:"SELECT * FROM DatabaseTransactionModel WHERE id = ?", arguments: [id]) {
-                    let fetchedModel = DatabaseTransactionModel(id: transaction.id, name: transaction.name, date: transaction.date, categoryID: transaction.categoryID, amount: transaction.amount, type: transaction.type, isExpense: transaction.isExpense)
+                    let fetchedModel = DatabaseTransactionModel(id: transaction.id!, name: transaction.name, date: transaction.date, categoryID: transaction.categoryID, amount: transaction.amount, type: transaction.type, isExpense: transaction.isExpense)
                     
                     returnModel = fetchedModel
                 }
@@ -39,7 +39,7 @@ extension TransactionListViewModel {
         
         do {
             try database.writer.write { db in
-                try DatabaseTransactionModel(id: <#Int#>, name: name, date: date, categoryID: categoryID, amount: amount, type: type, isExpense: isExpense).insert(db)
+                try DatabaseTransactionModel(id: nil, name: name, date: date, categoryID: categoryID, amount: amount, type: type, isExpense: isExpense).insert(db)
             }
         } catch {
             print("\(error)")
