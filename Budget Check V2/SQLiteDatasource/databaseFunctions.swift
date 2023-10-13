@@ -8,6 +8,64 @@
 import Foundation
 import GRDB
 
+// functions for databaseTransactionModel table
+extension TransactionListViewModel {
+    // READ
+    func readTransaction(id: Int) -> DatabaseTransactionModel? {
+        print("fetchingTransaction")
+        var returnModel:DatabaseTransactionModel? = nil
+        
+        do {
+            try database.reader.read { db in
+                if let transaction = try DatabaseTransactionModel.fetchOne(db, sql:"SELECT * FROM DatabaseTransactionModel WHERE id = ?", arguments: [id]) {
+                    let fetchedModel = DatabaseTransactionModel(id: transaction.id, name: transaction.name, date: transaction.date, categoryID: transaction.categoryID, amount: transaction.amount, type: transaction.type, isExpense: transaction.isExpense)
+                    
+                    returnModel = fetchedModel
+                }
+            }
+        } catch {
+            print("\(error)")
+        }
+        
+        print(returnModel?.amount as Any)
+        print("fetchedTransaction")
+        return returnModel
+    }
+    // UPDATE
+    
+    // INSERT
+    func addTransaction(name: String, date: String, categoryID: Int, amount: Double, type:TransactionType.RawValue, isExpense: Bool) {
+        print("addingTransaction")
+        
+        do {
+            try database.writer.write { db in
+                try DatabaseTransactionModel(id: <#Int#>, name: name, date: date, categoryID: categoryID, amount: amount, type: type, isExpense: isExpense).insert(db)
+            }
+        } catch {
+            print("\(error)")
+        }
+        print("addTransactionComplete")
+    }
+    
+    // DELETE
+    func deleteTransaction (id: Int, categoryID: Int) {
+        print("deletingTransaction")
+        
+        do {
+            if let transaction = readTransaction(id: id) {
+                try database.writer.write { db in
+                    try DatabaseTransactionModel.deleteOne(db, key: ["id": transaction.id])
+                    print("transactionDeleted")
+                }
+            }
+        } catch {
+            print("\(error)")
+        }
+    }
+}
+
+
+
 // functions for BudgetBuckets table
 extension TransactionListViewModel {
     
@@ -293,6 +351,7 @@ extension TransactionListViewModel {
         }
     }
     
+    // RESET
     func resetBudgetBuckets() {
         writeToBudgetBuckets(needs: 0, wants: 0, savings: 0)
     }

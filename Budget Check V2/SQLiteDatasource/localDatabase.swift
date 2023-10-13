@@ -77,7 +77,7 @@ extension SQLiteDatabase {
     // database schema
     private func createTable(_ db: GRDB.Database) throws {
         try db.create(table: "databaseTransactionModel") { t in
-            t.primaryKey("id", .integer)
+            t.autoIncrementedPrimaryKey("id")
             t.column("name", .text).notNull()
             t.column("date", .text).notNull()
             t.column("categoryID", .integer).notNull()

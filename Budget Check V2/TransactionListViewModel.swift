@@ -79,6 +79,30 @@ final class TransactionListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // write transactions to database (temporary)
+    func moveTransactionsToDatabase() {
+        print("moving transactions to database")
+        for transaction in transactions {
+            let transactionDBModel = DatabaseTransactionModel(
+                id: transaction.id,
+                name: transaction.institution,
+                date: transaction.date,
+                categoryID: transaction.categoryId,
+                amount: transaction.amount,
+                type: transaction.type,
+                isExpense: transaction.isExpense
+            )
+            
+            // insert transactions into database
+            addTransaction(name: transactionDBModel.name, date: transactionDBModel.date, categoryID: transactionDBModel.categoryID, amount: transactionDBModel.amount, type: transactionDBModel.type, isExpense: transactionDBModel.isExpense)
+        }
+        addToNeeds(income: 50)
+        addToSavings(income: 100)
+        addToWants(income: 15)
+        print("Finished moving transactions")
+    }
+    
+    
     func groupTransactionsByMonth() -> TransactionGroup {
         // checks if transaction array is empty else we return empty dictinary
         guard !transactions.isEmpty else {return[:] }
@@ -147,89 +171,58 @@ final class TransactionListViewModel: ObservableObject {
     
     // Budget Category Groupings
     
-    func accumulateWantsTransactions() -> Double {
-        print("accumulateWantsTransactions")
-        guard !transactions.isEmpty else {return 0.00}
-        
-        // Wants are 30% of income
-        var incomeSum: Double = accumulateIncome() * 0.30
-        print("Wants Allocation:", incomeSum.roundedTo2Digits())
-        
-        for transaction in transactions {
-            if transaction.signedAmount <= 0 && transaction.budgetCategory == .wants{
-                incomeSum += transaction.signedAmount
-            }
-        }
-        print("Wants:", incomeSum.roundedTo2Digits())
-        return incomeSum.roundedTo2Digits()
-    }
+//    func accumulateWantsTransactions() -> Double {
+//        print("accumulateWantsTransactions")
+//        guard !transactions.isEmpty else {return 0.00}
+//
+//        // Wants are 30% of income
+//        var incomeSum: Double = accumulateIncome() * 0.30
+//        print("Wants Allocation:", incomeSum.roundedTo2Digits())
+//
+//        for transaction in transactions {
+//            if transaction.signedAmount <= 0 && transaction.budgetCategory == .wants{
+//                incomeSum += transaction.signedAmount
+//            }
+//        }
+//        print("Wants:", incomeSum.roundedTo2Digits())
+//        return incomeSum.roundedTo2Digits()
+//    }
     
     
-    func accumulateNeedsTransactions() -> Double {
-        print("accumulateNeedsTransactions")
-        guard !transactions.isEmpty else {return 0.00}
-        
-        // Needs are 50% of income
-        var incomeSum: Double = accumulateIncome() * 0.50
-        print("Needs Allocation:", incomeSum.roundedTo2Digits())
-        
-        for transaction in transactions {
-            if transaction.signedAmount <= 0 && transaction.budgetCategory == .needs {
-                incomeSum += transaction.signedAmount
-            }
-        }
-        print("Needs:", incomeSum.roundedTo2Digits())
-        return incomeSum.roundedTo2Digits()
-    }
+//    func accumulateNeedsTransactions() -> Double {
+//        print("accumulateNeedsTransactions")
+//        guard !transactions.isEmpty else {return 0.00}
+//
+//        // Needs are 50% of income
+//        var incomeSum: Double = accumulateIncome() * 0.50
+//        print("Needs Allocation:", incomeSum.roundedTo2Digits())
+//
+//        for transaction in transactions {
+//            if transaction.signedAmount <= 0 && transaction.budgetCategory == .needs {
+//                incomeSum += transaction.signedAmount
+//            }
+//        }
+//        print("Needs:", incomeSum.roundedTo2Digits())
+//        return incomeSum.roundedTo2Digits()
+//    }
     
     
-    func accumulateSavingsTransactions() -> Double {
-        print("accumulateSavingsTransactions")
-        guard !transactions.isEmpty else {return 0.00}
-        
-        // Savings are 20% of income
-        var incomeSum: Double = accumulateIncome() * 0.20
-        print("Savings Allocation:", incomeSum.roundedTo2Digits())
-        
-        for transaction in transactions {
-            if transaction.signedAmount <= 0 && transaction.budgetCategory == .savings {
-                incomeSum += transaction.signedAmount
-            }
-        }
-        print("Savings:", incomeSum.roundedTo2Digits())
-        return incomeSum.roundedTo2Digits()
-    }
-    
-    // write transactions to database (temporary)
-    func moveTransactionsToDatabase() {
-        print("moving transactions to database")
-        for transaction in transactions {
-            let transactionDBModel = DatabaseTransactionModel(
-                id: transaction.id,
-                name: transaction.institution,
-                date: transaction.date,
-                categoryID: transaction.categoryId,
-                amount: transaction.amount,
-                type: transaction.type,
-                isExpense: transaction.isExpense
-            )
-            
-            // insert transactions into database
-            do {
-                try database.writer.write {db in
-                    try transactionDBModel.save(db)
-                }
-                print("Transaction inserted successfully.")
-            } catch {
-            print("Error: \(error)")
-            }
-        }
-        addToNeeds(income: 50)
-        addToSavings(income: 100)
-        addToWants(income: 15)
-        print("Finished moving transactions")
-    }
-    
+//    func accumulateSavingsTransactions() -> Double {
+//        print("accumulateSavingsTransactions")
+//        guard !transactions.isEmpty else {return 0.00}
+//
+//        // Savings are 20% of income
+//        var incomeSum: Double = accumulateIncome() * 0.20
+//        print("Savings Allocation:", incomeSum.roundedTo2Digits())
+//
+//        for transaction in transactions {
+//            if transaction.signedAmount <= 0 && transaction.budgetCategory == .savings {
+//                incomeSum += transaction.signedAmount
+//            }
+//        }
+//        print("Savings:", incomeSum.roundedTo2Digits())
+//        return incomeSum.roundedTo2Digits()
+//    }
 }
 
 struct DatabaseTransactionModel: Codable, FetchableRecord, PersistableRecord {
@@ -240,6 +233,16 @@ struct DatabaseTransactionModel: Codable, FetchableRecord, PersistableRecord {
     var amount: Double
     var type: TransactionType.RawValue
     var isExpense: Bool
+    
+    init(id:Int, name:String, date: String, categoryID: Int, amount: Double, type: TransactionType.RawValue, isExpense: Bool) {
+        self.id = id
+        self.name = name
+        self.date = date
+        self.categoryID = categoryID
+        self.amount = amount
+        self.type = type
+        self.isExpense = isExpense
+    }
 }
 
 struct BudgetBucketModel: Codable, FetchableRecord, PersistableRecord {
